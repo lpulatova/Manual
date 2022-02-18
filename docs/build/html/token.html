@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Инструкция по работе с сервисом токенизации наименований объектов &mdash; Manual 1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Инструкции по работе с объектами системы" href="objects.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Manual
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="objects.html">Инструкции по работе с объектами системы</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Инструкция по работе с сервисом токенизации наименований объектов</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Заполние пользовательской токенизации</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Обучение модели на основе пользовательской токенизации</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Заполнение связей между токенами и значениями ОД вручную</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">Заполнение связей между токенами и значениями ОД автоматически</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">Удаление лишних связей в разрезе ОД</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">Удаление лишних связей в разрезе значений ОД</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">Массовая обработка токенизированных наименований в разрезе значений ОД</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">Создание прямых связей между токенами и значениями ОД</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">Обработка отсутствующих связей между токенами и значениями ОД</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">Деблокирование связей между токенами и значениями ОД</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">Исправление токенизации</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">Получение метрик</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Инструкция по работе с сервисом токенизации наименований объектов</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/token.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>Инструкция по работе с сервисом токенизации наименований объектов<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h1>
+<dl class="simple">
+<dt>Токенизация</dt><dd><p>Это процесс разделения исходного текста на токены с преобразованиями.</p>
+</dd>
+<dt>Токены</dt><dd><p>Это кусочки исходного текста, которые были подвержены некоторым преобразованиям.</p>
+</dd>
+</dl>
+<p>Мы разделяем исходный (исторический) текст на кусочки, чтобы понять: какому ОД и значению ОД соответствует тот или иной кусочек исходного текста.
+Этот процесс незаметно происходит в голове у эксперта, который разделяет исходный текст (равно обрабатывает), и понимает, какие части текста указывают на соответствующие значения ОД, а какие не указывают на значения ОД, и какие не указывают ни на что и являются своеобразным “мусором”. При этом эксперт может переставлять части текста местами, объединять и разделять их, устраняя неточности исходного текста.
+Формализовав данный процесс, мы получили сервис токенизации наименований объектов, который учитывает набор и частоту встречаемости всех значений ОД в классе, а для обработанных объектов еще значения ОД этих объектов.</p>
+<section id="id2">
+<h2>Заполние пользовательской токенизации<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p>Прежде всего нам необходимо обучить модель на пользовательской токенизации. Для этого открываем «Справочник объектов» класса в котором есть объекты со статусом 1. Далее необходимо выделить все объекты класса со статусом 1, затем нажать кнопку «Токенизация наименования» <img alt="Токен" src="_images/token.png" />.</p>
+<img alt="_images/token01.png" src="_images/token01.png" />
+<p>На форме «Токенизация наименования» мы наблюдаем таблицу в которой представлены:</p>
+<ul class="simple">
+<li><p>Наименование - исходный (исторический) текст</p></li>
+<li><p>Машинная токенизация - текст из которого удаляются все символы кроме: пробела, точки, букв и цифр.</p></li>
+<li><p>Пользовательская токенизация - текст на основе которого будет происходить обучение модели.</p></li>
+</ul>
+<img alt="_images/token02.png" src="_images/token02.png" />
+<p>Далее необходимо запустить кнопку «Формирование словаря токенизации» <img alt="ffx" src="_images/ffx.png" />. Кнопка запускает сбор статистики использования токенов по классу на основе пользовательской токенизации, в случае ее отсутствия анализирует машинную токенизацию. При нажатии кнопки выводится информационное сообщение «Статистика по классу пересобирается. Необходимо обновить данные», нажмите «Ок». Для обновления данных используется кнопка «Обновить» (F5).</p>
+<img alt="_images/token21.png" src="_images/token21.png" />
+<p>Затем заполняем пользовательскую токенизацию путем копирования машинной токенизации. Для этого необходимо выделить все объекты и нажать на кнопку «Заполнить пользовательскую токенизацию» <img alt="Заполнить пользовательскую токенизацию" src="_images/twoPerson.png" /> на панели инструментов.</p>
+<img alt="_images/token03.png" src="_images/token03.png" />
+<p>Машинную токенизацию мы изменить не можем, она формируется автоматически. Пользовательскую токенизацию мы можем изменить, чтобы обучение модели происходило более эффективно (например убрать лишние данные в токенизированном наименовании, которые могут ошибочно влиять на процесс обучения, либо скорректировать данные).  Подробнее в разделе <a class="reference internal" href="#id12">Исправление токенизации</a>.</p>
+</section>
+<section id="id3">
+<h2>Обучение модели на основе пользовательской токенизации<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h2>
+<p>После заполнения пользовательской токенизации возвращаемся на форму «Справочник объектов» и на панели инструментов нажимаем на кнопку «Выгрузить в Excel при помощи Smart Api» <img alt="Excel" src="_images/xl.png" /></p>
+<img alt="_images/token05.png" src="_images/token05.png" />
+<p>На открывшейся форме «Параметры выгрузки через Smart Api» выбираем вид выгрузки «<strong>Обучить модель</strong>» и тип токенизации «<strong>Пользовательская токенизация</strong>». Затем нажимаем на кнопку Отправить данные <img alt="Отправить данные" src="_images/send.png" />.</p>
+<img alt="_images/token06.png" src="_images/token06.png" />
+<p>Ожидаем письмо об окончании обучения модели.</p>
+<img alt="_images/token07.png" src="_images/token07.png" />
+</section>
+<section id="id4">
+<h2>Заполнение связей между токенами и значениями ОД вручную<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h2>
+<p>Возвращаемся на форму «Токенизация наименования». Рассмотрим блоки которые расположены в нижней части формы.</p>
+<p>В блоке «Связь токенов зо значениями объекта» мы видим разделенный последовательно (попозиционно) на токены исходный текст объекта.</p>
+<img alt="_images/token17.png" src="_images/token17.png" />
+<p>В блоке «Статистика токенов по IBM-модели» мы видим ОД, значения ОД и произведение трех вероятностей:</p>
+<ul class="simple">
+<li><p>T - вероятность совместной встречаемости токена и значения ОД;</p></li>
+<li><p>A - вероятность встречаемости значения ОД на данной позиции при заданной длине текста;</p></li>
+<li><p>V - вероятность появления данного значения ОД.</p></li>
+</ul>
+<img alt="_images/token18.png" src="_images/token18.png" />
+<p>Значения расположены в порядке убывания произведения вероятностей. На основании данного произведения будет производиться автоматическое заполнение связей. Голубым цветом выделены поля которые соответсвуют ОД и значениям ОД присвоенным для объекта. Мы можем вручную перетащить строку со значением ОД из блока «Статистика токенов по IBM-модели» в блок «Связь токенов зо значениями объекта». При этом если объекту в выбранном ОД было присвоено другое значение, либо в выбранном ОД отсутствовало значение, то объекту будет присвоено выбранное значение ОД и создана соответствующая связь.</p>
+<img alt="_images/token19.png" src="_images/token19.png" />
+</section>
+<section id="id5">
+<h2>Заполнение связей между токенами и значениями ОД автоматически<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h2>
+<p>Автоматическое заполнения связей возможно попозиционно на форме «Токенизация наименования». Для этого необходимо выбрать объект и нажать на кнопку «Заполнить отсутсвующие связи на основе статистики» <img alt="Comp" src="_images/comp.png" />.</p>
+<img alt="_images/token20.png" src="_images/token20.png" />
+<p>Чтобы заполнить связи сразу для всего класса необходимо перейти в функциональный модуль.</p>
+<img alt="_images/token08.png" src="_images/token08.png" />
+<p>Запускаем функциональный модуль 2636 «Заполнение связей токенов со значениями объектов по классу»</p>
+<img alt="_images/token09.png" src="_images/token09.png" />
+<p>Заполняем значения параметров «Множество», «Классификация», «Класс», нажимаем кнопку «ОК»</p>
+<img alt="_images/token10.png" src="_images/token10.png" />
+</section>
+<section id="id6">
+<h2>Удаление лишних связей в разрезе ОД<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h2>
+<p>После автоматического заполнения связей необходимо отвязать некорректные. Это можно сделать из формы «Основания деления класса», выделяем ОД и нажимаем кнопку «Токены, связанные с ОД», либо сочетание клавиш Ctrl+Shift+T</p>
+<img alt="_images/token11.png" src="_images/token11.png" />
+<p>На открывшейся форме «Токены, связанные с ОД» мы видим таблицу на которой отображены <strong>текст привязанного токена</strong>, <strong>количесвто связей</strong> данного текста с объектами обучающей выборки, вхождение данного текста <strong>в домен</strong> выбранного основания деления (те что входят отмечены символом “V”).</p>
+<p>Выделяем те связи которые мы считаем лишними и нажимаем кнопку «Удалить связь токена со значением ОД» <img alt="Удалить" src="_images/del.png" /> либо клавишу Delete.</p>
+<img alt="_images/token12.png" src="_images/token12.png" />
+<p>Чтобы просмотреть объекты обучающей выборки которые привязаны к конкретному тексту необходимо выделить его и нажать на кнопку «Открыть связаннные с токеном объекты» <img alt="Токен" src="_images/token.png" /> на панели инструментов либо сочетание клавиш Ctrl+Shift+T.</p>
+<img alt="_images/token13.png" src="_images/token13.png" />
+</section>
+<section id="id7">
+<h2>Удаление лишних связей в разрезе значений ОД<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h2>
+<p>Если домен значений ОД содержит небольшое количество значений, то следует отвязать неккоректные связи и на уровне значений. Для этого переходим на форму «Справочник значений ОД» и нажимаем на кнопку «Токены, связанные со значением ОД» <img alt="ТокенЗн" src="_images/token-zn.png" /> либо сочетание клавиш Ctrl+Shift+T, предварительно выделив строку с ОД.</p>
+<img alt="_images/token14.png" src="_images/token14.png" />
+<p>На открывшейся форме «Токены, связанные со значением ОД» мы видим таблицу на которой отображены <strong>текст привязанного токена</strong>, <strong>количесвто связей</strong> данного текста с объектами обучающей выборки, <strong>T</strong> - вероятность совместной встречаемости токена и значения ОД.</p>
+<p>Выделяем те связи которые мы считаем лишними и нажимаем кнопку «Удалить связь токена со значениями ОД объекта» <img alt="Удалить" src="_images/del.png" /> либо клавишу Delete.</p>
+<img alt="_images/token15.png" src="_images/token15.png" />
+<p>Чтобы просмотреть объекты обучающей выборки которые привязаны к конкретному тексту необходимо выделить его и нажать на кнопку «Открыть связаннные с токеном объекты» <img alt="Токен" src="_images/token.png" /> на панели инструментов либо сочетание клавиш Ctrl+Shift+T.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Каждый раз при внесени довольно большого количества изменений (изменения токенов, проставление и удаление связей) в токенизацию необходимо проводить <a class="reference internal" href="#id3">Обучение модели на основе пользовательской токенизации</a>. Т.е. ее надо проводить как минимум перед началом всех работ, после чистки связей токенов со значениями ОД и после окончания работ по токенизации класса.</p>
+</div>
+</section>
+<section id="id8">
+<h2>Массовая обработка токенизированных наименований в разрезе значений ОД<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h2>
+<p>На форме «Токенизация наименования» возможна массовое создание, редактирование, удаление связей между токенами и значениями ОД.</p>
+<p>Для массового удаления связей необходимо выделить несколько объектов, также выделить связь на блоке «Связь токенов зо значениями объекта» и нажать кнопку “Удалить связь токена со значениями ОД объекта” <img alt="Удалить" src="_images/del.png" /> на панели инструментов или в контекстном меню, либо нажать клавишу Delete.</p>
+<img alt="_images/token22.png" src="_images/token22.png" />
+<p>Для массового создания связей нужно выделить несколько объектов и перетащить строку со значением ОД из блока «Статистика токенов по IBM-модели» в блок «Связь токенов зо значениями объекта».</p>
+<img alt="_images/token23.png" src="_images/token23.png" />
+<p>Массовая обработка токенизированных наименований ограничена количеством объектов не более 1000.</p>
+</section>
+<section id="id9">
+<h2>Создание прямых связей между токенами и значениями ОД<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>Прямая связь между токеном и значением ОД</dt><dd><p>показывает, что если среди токенов объекта есть данный токен, то с наибольшей вероятностью он означает данное значение ОД.</p>
+</dd>
+</dl>
+<p>Проставить прямую связь можно двумя способами.</p>
+<ol class="arabic simple">
+<li><p>На форме «Токенизация наименования» выделить объект, также выделить связь на блоке «Связь токенов зо значениями объекта» и нажать на кнопку «Добавить прямую связь между токеном и значением ОД» <img alt="sv1" src="_images/sv1.png" />. Строка с прямой связью будет выделена зеленым цветом.  Для удаления связи нажать на кнопку «Удалить прямую связь токена со значением ОД» <img alt="sv2" src="_images/sv2.png" />.</p></li>
+</ol>
+<img alt="_images/token25.png" src="_images/token25.png" />
+<ol class="arabic simple" start="2">
+<li><p>На форме «Токены, связанные со значением ОД» которую можно открыть с формы «Справочник значений ОД» выделить необходимое поле и нажать на кнопку «Добавить прямую связь между токеном и значением ОД» <img alt="sv1" src="_images/sv1.png" />. Строка с прямой связью будет выделена зеленым цветом. Для удаления связи нажать на кнопку «Удалить прямую связь токена со значением ОД» <img alt="sv2" src="_images/sv2.png" />. Подробнее о форме в разделе <a class="reference internal" href="#id7">Удаление лишних связей в разрезе значений ОД</a></p></li>
+</ol>
+<img alt="_images/token26.png" src="_images/token26.png" />
+<p>Когда в классе уже создано достаточное количество прямых связей можно ограничить заполнение отсутствующих связей на основе статистики только прямыми связями. Для этого в блоке «Связь токенов зо значениями объекта» необходимо нажать на кнопку «Заполнить отсутствующие прямые связи на основе статистики» <img alt="Comp_gr" src="_images/comp_gr.png" />.</p>
+<img alt="_images/token29.png" src="_images/token29.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Пример отношения 1:1 в рамках привязки токена к домену конкретного ОД.  Домен из положительных и отрицательных чисел. В домене есть числа -20, 20. В исторических данных написано “-20..20”, токены 20 и 20. К токену 20 мы привяжем -20 из ОД мин.значение и к токену 20 мы привяжем 20 из ОД макс.значение. В данном случае в рамках ОД мин.значение, т.к. в домене есть и -20 и 20, токен 20 не дает однозначно понять, какое значение привязать. мы поняли, что надо привязать -20 не ориентируясь только на ну информацию, что есть в токене, но и на упущенную в токене информацию, т.е. знак минус. Т.к. токен 20 не определяет однозначно значение ОД, связь не прямая. В домене макс.значения нет отрицательных чисел, токен 20 однозначно определяет значение 20. В рамках этого ОД связь однозначная, т.е. прямая.</p>
+</div>
+<p>Другой пример:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>В классе молотки токен молоток в любом его написании имеет прямую связь с значением Вида продукции “Молоток”. Токены кирочка, кирка, МКИ, кироч и т.д. имеет прямую связь значением Тип молотка “Кирочка”. Токен 11042 имеет прямую связь со значением ОД Стандарт “ГОСТ 11042”. ОД “Масса бойка” в граммах. Токен 600 будет иметь прямую связь со значеним ОД 600, а токен 0,6 будет иметь прямую связь с 600. При этом если в домене этого же ОД было бы значение 0,6, то 0,6 и 600 это не прямая связь.</p>
+</div>
+</section>
+<section id="id10">
+<h2>Обработка отсутствующих связей между токенами и значениями ОД<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h2>
+<p>Для того чтобы модель обучалась более эффективно требуется корректировка фасетной классификации объектов, блокировка заполненных некорректных значений ОД объектов.</p>
+<ul class="simple">
+<li><p>Значениям ОД взятым из полного наименования или других дополнительных полей ставим vso=1</p></li>
+<li><p>Значениям ОД взятым в результате доопределения ставим vso=2</p></li>
+<li><p>Значения ОД которые по какой-либо причине не были заполнены заполняем.</p></li>
+</ul>
+<p>Редактирование объектов возможно с формы «Токенизация наименования». Для этого необходимо выделить объект и нажать на кнопку «Редактирование классификации объектов» <img alt="work_with_obj" src="_images/work_with_obj.png" /> или сочетание клавиш Ctrl+Alt+C</p>
+<img alt="_images/token27.png" src="_images/token27.png" />
+<p>Для удобства можно добавить в отображение столбец, в котором будут выведены ИД ОД, которые заполнены у объектов, но не имеют привязок к токенам:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">SELECT</span> <span class="n">LISTAGG</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dvs_id</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="p">)</span> <span class="n">WITHIN</span> <span class="n">GROUP</span> <span class="p">(</span><span class="n">ORDER</span> <span class="n">BY</span> <span class="n">v</span><span class="o">.</span><span class="n">dvs_id</span><span class="p">)</span>
+<span class="o">--</span><span class="n">LISTAGG</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dvs_id</span>  <span class="s1">&#39;: &#39;</span>  <span class="n">NVL</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">valchar</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">valnum</span><span class="p">),</span> <span class="s1">&#39;; &#39;</span><span class="p">)</span> <span class="n">WITHIN</span> <span class="n">GROUP</span> <span class="p">(</span><span class="n">ORDER</span> <span class="n">BY</span> <span class="n">v</span><span class="o">.</span><span class="n">dvs_id</span><span class="p">)</span>
+<span class="n">FROM</span> <span class="n">vso</span> <span class="n">v</span><span class="p">,</span> <span class="n">vsn</span> <span class="n">n</span>
+<span class="n">WHERE</span> <span class="n">v</span><span class="o">.</span><span class="n">mlt_id</span> <span class="o">=</span> <span class="p">:</span><span class="n">MLT_ID</span>
+<span class="n">AND</span> <span class="n">v</span><span class="o">.</span><span class="n">clf_id</span> <span class="o">=</span> <span class="p">:</span><span class="n">CLF_ID</span>
+<span class="n">AND</span> <span class="n">v</span><span class="o">.</span><span class="n">cls_id</span> <span class="o">=</span> <span class="p">:</span><span class="n">CLS_ID</span>
+<span class="n">AND</span> <span class="n">v</span><span class="o">.</span><span class="n">status</span> <span class="o">&lt;&gt;</span> <span class="mi">2</span>
+<span class="n">AND</span> <span class="n">v</span><span class="o">.</span><span class="n">vsn_id</span> <span class="o">&lt;&gt;</span> <span class="mi">0</span>
+<span class="n">AND</span> <span class="n">v</span><span class="o">.</span><span class="n">obj_id</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">obj_id</span>
+<span class="n">AND</span> <span class="n">n</span><span class="o">.</span><span class="n">mlt_id</span> <span class="o">=</span> <span class="p">:</span><span class="n">MLT_ID</span>
+<span class="n">AND</span> <span class="n">n</span><span class="o">.</span><span class="n">sgn_id</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">sgn_id</span>
+<span class="n">AND</span> <span class="n">n</span><span class="o">.</span><span class="n">vsn_id</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">vsn_id</span>
+<span class="n">AND</span> <span class="n">NOT</span> <span class="n">EXISTS</span> <span class="p">(</span>
+  <span class="n">SELECT</span> <span class="n">NULL</span>
+  <span class="n">FROM</span> <span class="n">vcl</span>
+  <span class="n">WHERE</span> <span class="n">mlt_id</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">mlt_id</span>
+  <span class="n">AND</span> <span class="n">clf_id</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">clf_id</span>
+  <span class="n">AND</span> <span class="n">cls_id</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">cls_id</span>
+  <span class="n">AND</span> <span class="n">dvs_id</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">dvs_id</span>
+  <span class="n">AND</span> <span class="n">sgn_id</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">sgn_id</span>
+  <span class="n">AND</span> <span class="n">vsn_id</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">vsn_id</span>
+  <span class="n">AND</span> <span class="n">obj_id</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">obj_id</span>
+  <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h2>Деблокирование связей между токенами и значениями ОД<a class="headerlink" href="#id11" title="Permalink to this headline"></a></h2>
+<p>Все обработанные связи должны быть деблокированы, таким образом мы понимаем, что класс закончен. Когда мы заполненяем связи между токенами и значениями ОД вручную, то статус автоматически изменяется на 1. Все связи которые присвоены автоматически мы должны проверить и либо отвязать, либо деблокировать.</p>
+<p>Деблокирование связей происходит на форме «Токенизация наименования». Для этого необходимо выделить необходимую связь и нажать на кнопку «Деблокировать связь токена со значением объекта» <img alt="deblock" src="_images/deblock.png" /></p>
+<img alt="_images/token28.png" src="_images/token28.png" />
+</section>
+<section id="id12">
+<h2>Исправление токенизации<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h2>
+<p>Исправление токенизации возможно в режиме редактирования текста по одному объекту, в режиме замены по любому числу выделенных объектов или SQL-запросом к таблице TON.
+По опыту тестирования инструмента основные операции в исправлении токенизации:</p>
+<ul class="simple">
+<li><p>возврат удаленного символа (часто это единица измерения после числа, которой нет в значениях ОД),</p></li>
+<li><p>разделение токенов (несколько слов могут быть слеплены в одно, например, из-за сокращений),</p></li>
+<li><p>объединение токенов (часть слова может быть отделена, так как сама является валидным токеном, либо значение ОД является диапазоном).</p></li>
+</ul>
+<p>В целом важно понимать, что токенизированное наименование «стремится» к нормализованному.</p>
+<p>Чтобы массово изменить тексты пользовательской токенизации используется блок «Заменить текст токенизации». В поле «Искомый текст» вводим текст который требует коррекции, в поле «Заменить на» обновленный текст. Далее выделяем записи в которых необходимо произвести замену и нажимаем кнопку «Заменить».</p>
+<img alt="_images/token16.png" src="_images/token16.png" />
+</section>
+<section id="id13">
+<h2>Получение метрик<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h2>
+<p>Для контроля эффективности выполненных работ разработан новый сервис «Получить метрики» - подсчет метрик по распознаванию значений ОД в классе. Запускается через новое меню “Обучить модель” (открывается с формы “Справочник объектов”).</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Не стоит при каждом изменении данных смотреть метрики.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="objects.html" class="btn btn-neutral float-left" title="Инструкции по работе с объектами системы" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, LPulatova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
