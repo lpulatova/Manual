@@ -11,7 +11,7 @@ Welcome to Manual's documentation!
 .. toctree::
 	:maxdepth: 2
 
-	objects
+	
 	token
 
 
